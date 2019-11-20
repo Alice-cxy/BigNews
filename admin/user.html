@@ -77,16 +77,58 @@
             if(res.code==200){
                 //遍历获取数据
                 for(let key in res.data){
+                    //console.log(res);
+                   // console.log(key+'------'+res.data[key]);
                    $('input.'+key).val(res.data[key])
                 }
                 $('.user_pic').attr('src',res.data.userpic)
+                
             }
         }
     })
+    // 
     $('#exampleInputFile').on('chang',function(){
+        //console.log(this.files[0]);
+        //将选择的图片转成一个url地址
         let imgIcon = this.files[0];
+        console.log(this);
+        
         let url = URL.createObjectURL(imgIcon);
         $('.user_pic').attr('src',url);
+    })
+    $('button.btn-edit').on('cilck',function(e){
+        //submit按钮会默认转换，所以要阻止
+        e.preventDefault();
+        //[0]起转换成原生对象作用
+        let form = $('#form')[0];
+        let userData = new FormData(form);
+
+        $.post({
+            url:BigNew.user_edit,
+            data: userData,
+            //不需要设置请求类型
+            contentType:false,
+            //不需要进行编码
+            processData:false,
+            success:function(res){
+                if(res.code==200){
+                    $.ajax({
+                        type:'get',
+                        url:window.BigNew.user_info,
+                        success:function(res){
+                            //parent在子页面获取到父页面的元素
+                            parent.$('.user_info>img').attr('src',res.data.userpic);
+                            parent.$('user_info>span').html('欢迎&nbsp;&nbsp;'+res.data.nickname);
+                            parent.$('.user_center_link>img').attr('src',res.data.userpic);
+                            //刷新子页面
+                            window.location.reload();
+                        }
+                    })
+                }
+            }
+        })
+
+
     })
     </script>
 </body>
