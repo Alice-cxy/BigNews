@@ -138,13 +138,14 @@
                 $('#btn-confirm').text('编辑').addClass('btn-primary').removeClass('btn-success');
 
                 let cateId = $(e.relatedTarget).attr('data-id');
-
+                //发送get请求并渲染数据
                 $.get({
                     url:BigNew.category_search,
                     data:{
                         id:cateId
                     },
                     success:function(res){
+                        //console.log(res);
                         if(res.code==200){
                             $('#recipient-name').val(res.data[0].name);
                             $('#message-text').val(res.data[0].slug);
@@ -156,7 +157,7 @@
 
              //点击模态框确认按钮
              $('#btn-confirm').on('click',function(){
-
+                //判断是否为新增部分
                  if($(this).hasClass('btn-success')){
                      let name =$('#recipient-name').val();
                      let slug = $('#message-text').val();
@@ -175,6 +176,7 @@
                              }
                          }
                      })
+                        //编辑部分
                  }else{
                      let name = $('#recipient-name').val();
                      let slug = $('#message-text').val();
@@ -189,6 +191,7 @@
                          },
                          success:function(res){
                              $('#myModal').modal('hide');
+                             //调用函数
                              getData();
                          }
                      })
