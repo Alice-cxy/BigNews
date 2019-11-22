@@ -164,7 +164,7 @@
 
             })
 
-
+            //点击筛选按钮
             $('#btnSearch').on('click', function (e) {
                 e.preventDefault();
 
@@ -177,11 +177,13 @@
                         perpage: perpage
                     },
                     success: function (res) {
+                        //有数据的情况下
                         if(res.code==200&&res.data.data.length !=0){
                             $('tbody').html(template('art_list', res));
                             $('#pagination-demo').show();
                             $('#pagination-demo').twbsPagination('changeTotalPages',res.data.totalPage,1);
                         }else{
+                            //没有数据的情况下
                             $('tbody').html('<tr><td style="text-align:center;color:hotpink;font-size:52px" colspan=6>抱歉！没有数据了！</td></tr>');
                             $('#pagination-demo').hide();
                         }
@@ -189,8 +191,10 @@
                 })
 
             })
+            //点击删除按钮
             $('tbody').on('click','.delete',function(){
                 let deleteId = $(this).attr('data-id');
+                //提醒用户
                 if(confirm('请问确定要删除吗？')){
                     $.post({
                         url:BigNew.article_delete,
