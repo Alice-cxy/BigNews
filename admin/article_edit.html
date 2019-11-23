@@ -114,14 +114,14 @@
         editor.create();
 
         $.get({
-            url:BigNew.creategory_list,
+            url:BigNew.category_list,
             success:function(res){
                 if(res.code==200){
                     $('select.category').html(template('edit-list',res));
                 }
             }
         });
-        
+        //debugger;
         function searchStr2obj(str){
             str = str.slice(1);
             searchArr = str.split('&');
@@ -133,14 +133,17 @@
             return obj;
         }
         let artId = searchStr2obj(window.location.search).id;
-
+     
         $.get({
             url:BigNew.article_search,
             data:{
                 id:artId
             },
+        
             success:function(res){
-                if(res.code==200){
+                //console.log(res);
+                
+              if(res.code==200){
                     $('#categoryId').val(res.data.id);
                     $('#inputTitle').val(res.data.title);
                     $('img.article_cover').attr('src',res.data.cover);
@@ -157,10 +160,12 @@
         $('button.btn-edit').on('click',function(e){
             e.preventDefault();
             let form = $('#form')[0];
+            //console.log(form);
+            
             let fd = new FormData(form);
              
-            fd.append('conten',editor.txt.html());
-            fd.append('state','已修改');
+            fd.append('content',editor.txt.html());
+           // fd.append('state','已修改');
 
             $.post({
                 url:BigNew.article_edit,
@@ -168,7 +173,9 @@
                 contentType:false,
                 processData:false,
                 success:function(res){
+                   // console.log(res);
                     if(res.code==200){
+                        
                         alert('修改成功');
                         window.history.back();
                     }
